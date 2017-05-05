@@ -8,6 +8,7 @@ using System.Web.Http;
 using BO;
 using BL;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace SampleWebAPIDb.Controllers
 {
@@ -28,33 +29,72 @@ namespace SampleWebAPIDb.Controllers
         }
 
         // POST: api/Kategori
+        [Authorize(Users ="erick@gmail.com")]
+        //[Authorize(Roles ="")]
         public async Task<IHttpActionResult> Post(Kategori obj)
         {
             KategoriBL kategoriBL = new KategoriBL();
-            try
+            if (ModelState.IsValid)
             {
-                await kategoriBL.Insert(obj);
-                return Ok("insert data success");
+                try
+                {
+                    await kategoriBL.Insert(obj);
+                    return Ok("insert data success");
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
             }
-            catch (Exception ex)
+            else
             {
-                return BadRequest(ex.Message);
+                string strError = string.Empty;
+                foreach(var m in ModelState.Values)
+                {
+                    foreach(var b in m.Errors)
+                    {
+                        strError += b.ErrorMessage + "<br/>";
+                    }
+                }
+                return BadRequest(strError);
             }
+           
         }
 
         // PUT: api/Kategori/5
         public async Task<IHttpActionResult> Put(Kategori obj)
         {
+            List<MyError> listError = new List<MyError>();
+
             KategoriBL kategoriBL = new KategoriBL();
-            try
+            if (ModelState.IsValid)
             {
-                await kategoriBL.Update(obj);
-                return Ok("update data success");
+                try
+                {
+                    await kategoriBL.Update(obj);
+                    return Ok("update data success");
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
             }
-            catch (Exception ex)
+            else
             {
-                return BadRequest(ex.Message);
+                foreach(var m in ModelState.Values)
+                {
+                    foreach(var e in m.Errors)
+                    {
+                        listError.Add(new MyError
+                        {
+                            ErrorMessage = e.ErrorMessage
+                        });
+                    }
+                }
+                var sError = JsonConvert.SerializeObject(listError);
+                return BadRequest(sError);
             }
+           
         }
 
         // DELETE: api/Kategori/5

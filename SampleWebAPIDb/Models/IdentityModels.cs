@@ -21,7 +21,7 @@ namespace SampleWebAPIDb.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("SampleWebApiDbConnectionString", throwIfV1Schema: false)
         {
         }
         

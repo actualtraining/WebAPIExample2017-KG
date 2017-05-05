@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -41,7 +42,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Barang.cs" />
+    <Compile Include="BearerToken.cs" />
     <Compile Include="Kategori.cs" />
+    <Compile Include="MyError.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="viewBarangWithKategori.cs" />
   </ItemGroup>
